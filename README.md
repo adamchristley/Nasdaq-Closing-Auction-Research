@@ -63,6 +63,18 @@ pytest -q
 python scripts/run_research.py --input data/train.csv --output-dir results
 ```
 
+### Walk-forward validation
+
+Use expanding-window validation to test whether results are stable across multiple future date blocks instead of depending on one train/validation split.
+
+    python scripts/run_walk_forward.py \\
+      --input data/train.csv \\
+      --initial-train-dates 250 \\
+      --validation-dates 50 \\
+      --step-dates 50
+
+The default is an expanding training window. Use `--train-window-dates` for a rolling window and `--gap-dates` to leave complete date blocks between training and validation. The script writes per-fold metrics, aggregate mean/std metrics, and the exact run configuration under `results/walk_forward/`.
+
 ### Synthetic smoke test
 
 A deterministic synthetic generator is included solely to verify the pipeline end-to-end before downloading the competition data:
